@@ -102,6 +102,10 @@ class SparkPostApiClient
                 $this->key = SPARKPOST_API_KEY;
             }
         }
+        if (defined('PROXY_HOST') && defined('PROXY_PORT')) {
+            $curlOpts['proxy_host'] = isset($curlOpts['proxy_host']) ? $curlOpts['proxy_host'] : PROXY_HOST;
+            $curlOpts['proxy_port'] = isset($curlOpts['proxy_port']) ? $curlOpts['proxy_port'] : PROXY_PORT;
+        }
         $this->subaccount = $subaccount;
         $this->curlOpts = array_merge($this->getDefaultCurlOptions(), $curlOpts);
     }
@@ -905,6 +909,12 @@ class SparkPostApiClient
             curl_setopt($ch, CURLOPT_VERBOSE, true);
             $verbose = fopen('php://temp', 'w+');
             curl_setopt($ch, CURLOPT_STDERR, $verbose);
+        }
+
+        // Set proxy details if they exist
+        if ($this->getCurlOption('proxy_host') && $this->getCurlOption('proxy_port')) {
+            curl_setopt($ch, CURLOPT_PROXY, $this->getCurlOption('proxy_host'));
+            curl_setopt($ch, CURLOPT_PROXYPORT, $this->getCurlOption('proxy_port'));
         }
 
         // This fixes ca cert issues if server is not configured properly

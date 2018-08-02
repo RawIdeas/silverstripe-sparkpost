@@ -1,5 +1,5 @@
 {
-    "name": "lekoala/silverstripe-sparkpost",
+    "name": "rawideas/silverstripe-sparkpost",
     "description": "SparkPost integration for SilverStripe CMS",
     "type": "silverstripe-module",
     "keywords": [
